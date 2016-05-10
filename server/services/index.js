@@ -1,13 +1,20 @@
 var routeConfig = require("../config").api.routes;
-var request = require("request");
+var requestPromise = require("request-promise");
+var Promise = require("es6-promise").Promise;
 
-var getShows = function(callback) {
-	var options = {
-	  url: routeConfig.getShows.url,
-	  headers: routeConfig.getShows.headers
-	};
-	console.log("in getShows service, options are: %j", options);
-	request(options, callback);
+function getShows() {
+	return new Promise(function(fulfill, reject) {
+		
+		var options = {
+		  url: routeConfig.getShows.url,
+		  headers: routeConfig.getShows.headers
+		};
+
+		// make request promise call
+		requestPromise(options)
+			.then(fulfill)
+			.catch(reject);
+	});
 };
 
 module.exports = {
